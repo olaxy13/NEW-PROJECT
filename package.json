@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "babel": "^6.23.0",
+    "concurrently": "^7.4.0",
+    "cookie-session": "^2.0.0",
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.0",
+    "morgan": "^1.10.0",
+    "nodejs": "^0.0.0",
+    "nodemon": "^2.0.19",
+    "passport": "^0.6.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth2": "^0.2.0",
+    "passport-jwt": "^4.0.0",
+    "underscore": "^1.13.4",
+    "v-response": "^1.1.0",
+    "validatorjs": "^3.22.1"
+  },
+  "name": "new-project",
+  "version": "1.0.0",
+  "description": "for purchase of courses",
+  "main": "index.js",
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olaxy13/NEW-PROJECT.git"
+  },
+  "author": "OKE OLAMIDE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olaxy13/NEW-PROJECT/issues"
+  },
+  "homepage": "https://github.com/olaxy13/NEW-PROJECT#readme"
+}
