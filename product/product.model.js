@@ -5,22 +5,21 @@ const productSchema = new Schema ({
     title: {
         type: String,
         required: true,
-        unique: true
     },
     description: {
         type: String,
         required: true,
     },
-    video: {
-        type: String,
-        required: true,
-    },
-    categories: {
+    // video: {
+    //     type: String,
+    //     required: true,
+    // },
+    category: {
         type: Array
     },
-    rate: {
-        type: String,
-    },
+    // rate: {
+    //     type: String,
+    // },
     review: {
         type: String,
     },
@@ -32,3 +31,6 @@ const productSchema = new Schema ({
 },
 { timestamps: true}
 );
+
+const Product = mongoose.model(/*name*/ "products", productSchema, /*collection:*/ 'Products');
+module.exports = Product;

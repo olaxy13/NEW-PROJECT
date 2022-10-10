@@ -9,6 +9,19 @@ const vm = require("v-response");
  const LOGIN = require("./auth/auth.route");
  const PROFILE = require("./profile/profile.route")
  const CART = require("./cart/cart.route")
+ const PRODUCT = require("./product/product.route");
+ const UpdateProduct = require("./product/product.route");
+ const DeleteProduct = require("./product/product.route");
+ const GetProduct = require("./product/product.route");
+
+
+ //Order
+ const CreateOrder = require("./order/order.route");
+ const UpdateOrder = require("./order/order.route");
+ const DeleteOrder = require("./order/order.route");
+ const GetOrder = require("./order/order.route");
+ const GetOrderAdmin = require("./order/order.route");
+ const GetIncome = require("./order/order.route");
 
  dotenv.config();
 
@@ -35,7 +48,18 @@ app.use('/api', REGISTER);
 app.use('/api', LOGIN);
 app.use('/api', PROFILE);
 app.use('/api', CART);
+app.use('/api', PRODUCT);
+app.use('/api', UpdateProduct);
+app.use('/api', DeleteProduct);
+app.use('/api', GetProduct);
 
+//Order
+app.use('/api', CreateOrder);
+app.use('/api', UpdateOrder);
+app.use('/api', DeleteOrder);
+app.use('/api', GetOrder);
+app.use('/api', GetOrderAdmin);
+app.use('/api', GetIncome);
 
 const port = process.env.PORT || 2050;
 
