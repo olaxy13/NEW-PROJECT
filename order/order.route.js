@@ -11,6 +11,9 @@ router.delete("/order/delete", OrderController.DeleteOrder);
 router.get("/order/get", OrderController.GetOrder);
 router.get("/order/get/admin", OrderController.GetOrderAdmin);
 router.get("/order/income", OrderController.GetIncome);
+router.post("/order/paystack/pay",  OrderController.Payment);
+router.get("/order/verify/pay",  OrderController.VerifyPayment);
+router.get("/order/paystack/reciept",  OrderController.Receipt);
 
 
 module.exports = router;

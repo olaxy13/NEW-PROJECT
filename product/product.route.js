@@ -9,6 +9,6 @@ router.post("/create/product",  validator(productValidator),ProductController.Cr
 router.put("/product/update", ProductController.UpdateProduct);
 router.delete("/product/delete", ProductController.DeleteProduct);
 router.get("/product/get", ProductController.GetProduct);
-
+router.post("/product/upload", ProductController.UploadCourses);
 
 module.exports = router;

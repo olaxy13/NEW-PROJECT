@@ -1,4 +1,5 @@
 const express = require("express");
+//const fileupload = require("express-fileupload");
 const passport = require('passport');
 const mongoose = require("mongoose");
 const dotenv = require("dotenv")
@@ -9,11 +10,12 @@ const vm = require("v-response");
  const LOGIN = require("./auth/auth.route");
  const PROFILE = require("./profile/profile.route")
  const CART = require("./cart/cart.route")
+ const UploadCourses = require("./product/product.route");
  const PRODUCT = require("./product/product.route");
  const UpdateProduct = require("./product/product.route");
  const DeleteProduct = require("./product/product.route");
  const GetProduct = require("./product/product.route");
-
+const PROFILEIMAGE = require("./profile/profile.route")
 
  //Order
  const CreateOrder = require("./order/order.route");
@@ -22,11 +24,17 @@ const vm = require("v-response");
  const GetOrder = require("./order/order.route");
  const GetOrderAdmin = require("./order/order.route");
  const GetIncome = require("./order/order.route");
+ const Payment = require("./order/order.route");
+ const VerifyPayment = require("./order/order.route");
+ const Receipt = require("./order/order.route");
 
+ 
  dotenv.config();
 
 const app = express();
 app.get('/', (req, res) => res.send('Hello World'));
+
+//app.use(fileupload())
 
 //Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,11 +55,14 @@ mongoose
 app.use('/api', REGISTER);
 app.use('/api', LOGIN);
 app.use('/api', PROFILE);
+app.use('/api', PROFILEIMAGE);
 app.use('/api', CART);
 app.use('/api', PRODUCT);
 app.use('/api', UpdateProduct);
 app.use('/api', DeleteProduct);
 app.use('/api', GetProduct);
+app.use('/api', UploadCourses);
+
 
 //Order
 app.use('/api', CreateOrder);
@@ -60,6 +71,11 @@ app.use('/api', DeleteOrder);
 app.use('/api', GetOrder);
 app.use('/api', GetOrderAdmin);
 app.use('/api', GetIncome);
+app.use('/api', Payment);
+app.use('/api', VerifyPayment);
+app.use('/api', Receipt);
+
+
 
 const port = process.env.PORT || 2050;
 

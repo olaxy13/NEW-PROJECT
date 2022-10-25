@@ -1,6 +1,7 @@
 const _ = require("underscore");
 // const { authSchema, loginSchema } = require("../helper/validation")
 const User = require("../auth/auth.model");
+const Payment = require("../models/Buy")
 const vm = require("v-response");
 const {createToken} = require ("../config/jwt");
 const Order = require("../order/order.model");
@@ -150,3 +151,57 @@ exports.GetIncome = async (req, res, next) => {
   }
   
 
+exports.Payment = async (req, res, next) => {
+    const form = _.pick(req.body,['amount','email','full_name']);
+    form.metadata = {
+        full_name : form.full_name
+    }
+    form.amount *= 100;
+    initializePayment(form, (error, body)=>{
+        if(error){
+            //handle errors
+            console.log(error);
+            return;
+       }
+       response = JSON.parse(body);
+       res.redirect(response.data.authorization_url)
+    });
+};
+
+exports.VerifyPayment = async  (req, res, next) => {
+    // const ref = req.query.reference;
+    const ref = req.body;
+    verifyPayment(ref, (error,body)=>{
+        if(error){
+            //handle errors appropriately
+            console.log(error)
+            return res.redirect('/error');
+        }
+        response = JSON.parse(body);
+        console.log(response)
+        const data = _.at(response.data, ['reference', 'amount','customer.email', 'metadata.full_name']);
+        [reference, amount, email, full_name] = data;
+        newPaid = {reference, amount, email, full_name}
+        const payment = new Payment(newPaid)
+        payment.save().then((payment)=>{
+            if(payment){
+                res.redirect('/receipt/'+payment._id);
+            }
+        }).catch((e)=>{
+            res.redirect('/error');
+        })
+    })
+}
+
+exports.Receipt = async (req, res, next) => {
+    const id = req.params.id;
+    Payment.findById(id).then((payment)=>{
+        if(!payment){
+            //handle error when the payment is not found
+            res.redirect('/error')
+        }
+        res.render('success.pug',{payment});
+    }).catch((e)=>{
+        res.redirect('/error')
+    });
+};
