@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema
 
-const productSchema = new Schema ({
+const ProductSchema = new Schema ({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+
+},
     title: {
         type: String,
         required: true,
@@ -20,17 +25,31 @@ const productSchema = new Schema ({
     // rate: {
     //     type: String,
     // },
-    review: {
-        type: String,
-    },
     price: {
         type: Number,
         required: true,
     },
+    review: [
+        //we are using an array method here so a user is accessed to a comment
+        {
+          user: {
+            type: Schema.Types.ObjectId,
+            ref: "users",
+          },
+          text: {
+            type: String,
+            required: true,
+          },
+          date: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
 
 },
 { timestamps: true}
 );
 
-const Product = mongoose.model(/*name*/ "products", productSchema, /*collection:*/ 'Products');
-module.exports = Product;
+const product = mongoose.model(/*name*/ "product", ProductSchema, /*collection:*/ 'Product');
+module.exports = product;

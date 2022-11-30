@@ -5,7 +5,7 @@ const Payment = require("../models/Buy")
 const vm = require("v-response");
 const {createToken} = require ("../config/jwt");
 const Order = require("../order/order.model");
-
+const { initializePayment } = require("../config/paystack")
 
 //CREATE
 exports.CreateOrder = async (req, res, next) => {
@@ -167,6 +167,7 @@ exports.Payment = async (req, res, next) => {
        res.redirect(response.data.authorization_url)
     });
 };
+
 
 exports.VerifyPayment = async  (req, res, next) => {
     // const ref = req.query.reference;

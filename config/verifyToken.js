@@ -7,12 +7,14 @@ dotenv.config();
 const validateAccessToken = (req, res, next) => {
   try {
     const token = req?.headers?.Authorization || req?.headers?.authorization;
+   console.log("token!", token)
     const getToken = token?.split(':')[1]?.trim();
-
-    verifyJwtToken(getToken, process.env.jwtSecret)
+    console.log("token!!!!", getToken)
+    verifyJwtToken(getToken, "secret")
       .then((data) => {
         req.sub = data;
-        next();
+       next();
+       console.log('SUCCESS',);
       })
       .catch((err) => {
       console.log('token validation error', err);

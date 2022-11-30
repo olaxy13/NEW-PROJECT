@@ -15,6 +15,7 @@ const vm = require("v-response");
  const UpdateProduct = require("./product/product.route");
  const DeleteProduct = require("./product/product.route");
  const GetProduct = require("./product/product.route");
+ const ReviewProduct = require("./product/product.route")
 const PROFILEIMAGE = require("./profile/profile.route")
 
  //Order
@@ -28,6 +29,10 @@ const PROFILEIMAGE = require("./profile/profile.route")
  const VerifyPayment = require("./order/order.route");
  const Receipt = require("./order/order.route");
 
+ //WALLET
+ const FundAccount = require("./wallet/wallet.route");
+ const Verify  = require("./wallet/wallet.route")
+ const FUND = require("./wallet/wallet.route")
  
  dotenv.config();
 
@@ -61,6 +66,7 @@ app.use('/api', PRODUCT);
 app.use('/api', UpdateProduct);
 app.use('/api', DeleteProduct);
 app.use('/api', GetProduct);
+app.use('/api', ReviewProduct);
 app.use('/api', UploadCourses);
 
 
@@ -74,6 +80,11 @@ app.use('/api', GetIncome);
 app.use('/api', Payment);
 app.use('/api', VerifyPayment);
 app.use('/api', Receipt);
+
+//Wallet
+app.use("/api", FundAccount)
+app.use("api", Verify)
+app.use("api", FUND)
 
 
 

@@ -1,6 +1,7 @@
 const _ = require("underscore");
 // const { authSchema, loginSchema } = require("../helper/validation")
 const User = require("./auth.model");
+const Wallet = require("../wallet/wallet.model")
 const vm = require("v-response");
 const {createToken} = require ("../config/jwt")
 
@@ -29,8 +30,14 @@ exports.CreateAccount = async (req, res, next) => {
                if (!save_user) {
                 return res.status(400)
                     .json(vm.ApiResponse(false, 400, "Oops! an error occurr"))
-            } else {
+            } else {  let obj = save_user
+                console.log("REallty", obj) 
+                const create_wallet = new Wallet (req.body)
+                const save_wallet = await create_wallet.save()
+                console.log("olaaaa",save_wallet)
                 save_user.password = undefined;
+                _.extend(save_user, { save_wallet: save_wallet
+                })
                 return res.status(201)
                     .json(vm.ApiResponse(true, 200, `account created`, save_user));
             }

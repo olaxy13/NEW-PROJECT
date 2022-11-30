@@ -9,11 +9,11 @@ const createToken = ({ fullName, _id, }) =>
       fullName,
       _id,
     },
-    process.env.jwtSecret,
+      "secret",
     { expiresIn: '1h' }
   );
 
-const verifyJwtToken = (token, secret) =>
+  const verifyJwtToken = (token, secret) =>
   new Promise((resolve, reject) =>
     jwt.verify(token, secret, (err, decoded) => {
       // err
@@ -21,6 +21,22 @@ const verifyJwtToken = (token, secret) =>
       resolve(decoded);
     })
   );
+
+
+
+
+// const verifyJwtToken = (token, secret) =>
+// console.log("Token1", token)
+//   new Promise((resolve, reject) =>
+//     jwt.verify(token, secret, (err, decoded) => {
+//       // err
+//       console.log("Token2", token)
+//       if (err) 
+//       console.log("MINE>>>", err) 
+//       return reject(err);
+//       resolve(decoded);
+//     })
+//   );
   module.exports = {
     createToken,
     verifyJwtToken

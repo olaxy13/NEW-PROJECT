@@ -2,7 +2,7 @@ const dotenv = require("dotenv")
 dotenv.config();
 
 const paystack = (request) => {
-    const MySecretKey = process.env.paystackSecretKey;
+    const MySecretKey = 'Bearer sk_test_2e48d80abdd1e7167a856148e3a88760a168be35';
     //sk_test_xxxx to be replaced by your own secret key
     const initializePayment = (form, mycallback) => {
         const option = {
@@ -36,3 +36,40 @@ const paystack = (request) => {
     return {initializePayment, verifyPayment};
 }
 module.exports = paystack
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//tayot51@gmail.com

@@ -17,10 +17,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    wallet : {
-        type: Number,
-        default: 0
-    }
+    // wallet : {
+    //     type: Number,
+    //     default: 0
+    // }
 }, { timestamps: true });
 
 const User = mongoose.model(/*name*/ 'user', userSchema, /*collection:*/ 'Users');
