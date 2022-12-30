@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = new Schema({
-    fullName: {
+    full_name: {
         type: String,
-        unique: true  /*meaning you cannot create a user with that same name */  
+        //unique: true  /*meaning you cannot create a user with that same name */  
     },
     email: {
         type: String

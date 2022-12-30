@@ -15,14 +15,14 @@ const walletSchema = new Schema({
         type: String,
         required: true,
     },
-    amount: {
+    balance: {
         type: Number,
-        required: true,
+        default: 0
     },
-    reference: {
-        type: String,
-        required: true
-    },
+    // reference: {
+    //     type: String,
+    //     required: true
+    // },
     balance_before : {
         type: Number,
         default: 0

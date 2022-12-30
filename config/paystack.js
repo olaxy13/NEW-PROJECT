@@ -4,7 +4,7 @@ dotenv.config();
 const paystack = (request) => {
     const MySecretKey = 'Bearer sk_test_2e48d80abdd1e7167a856148e3a88760a168be35';
     //sk_test_xxxx to be replaced by your own secret key
-    const initializePayment = (form, mycallback) => {
+    const initializePayment =async  (form, mycallback) => {
         const option = {
             url : 'https://api.paystack.co/transaction/initialize',
             headers : {
@@ -19,7 +19,7 @@ const paystack = (request) => {
         }
         request.post(option,callback);
     }
-    const verifyPayment = (ref,mycallback) => {
+    const verifyPayment = async(ref,mycallback) => {
         const option = {
             url : 'https://api.paystack.co/transaction/verify/' + encodeURIComponent(ref),
             headers : {
@@ -28,8 +28,8 @@ const paystack = (request) => {
                 'cache-control': 'no-cache'
            }
         }
-        const callback = (error, response, body)=>{
-            return mycallback(error, body);
+        const callback = async (error, response, body)=>{
+            return await mycallback(error, body);
         }
         request(option,callback);
     }

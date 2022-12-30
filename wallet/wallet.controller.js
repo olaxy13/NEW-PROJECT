@@ -1,9 +1,13 @@
 const paystack = require('paystack')('Bearer sk_test_2e48d80abdd1e7167a856148e3a88760a168be35')
 const request = require('request');
+const Q = require("q")
+const Transaction = require("../models/Transaction")
 //const _ = require("underscore");
 const _ = require('lodash');
 const path = require('path');
-const Wallet = require('./wallet.model')
+const Wallet = require('./wallet.model');
+const User = require('../auth/auth.model');
+//const { response } = require('express');
 const {initializePayment, verifyPayment} = require("../config/paystack")(request);
 //const Paystack = require("../config/bora")
 //const {initialize} = require("../config/bora")
@@ -19,26 +23,42 @@ const {initializePayment, verifyPayment} = require("../config/paystack")(request
 //FUND
 exports.fundAccount = async (req, res, next) => {
   try{
-
-   // const form = new Wallet (req.body);
+ let response
+   // const form = new Wallet (req.body); 
+   const checkuser = await User.findById(req.body.userId)
+   
+   console.log("GGGGGG", checkuser)
+  
+   if(!checkuser) {
+    return res.status(404).json({message: 'User does not exist'})
+   }
    const form = _.pick(req.body,['amount','email','full_name']);
    form.metadata = {
        full_name : form.full_name
    }
    form.amount *= 100;
-   initializePayment(form, (error, body)=>{
+     initializePayment (form, (error, body)=> {
        if(error){
            //handle errors
            console.log(error);
            return;
       }
-      response = JSON.parse(body);
-      console.log("first trial",response)
+       response = JSON.parse(body);
+      console.log("first trial", response)
+      const createNewUserTransactionRef =  new Transaction({
+        userId: req.body.userId,
+        reference: response.data.reference
+      })
+ 
+
+      console.log("transaction Ref", createNewUserTransactionRef)
+
       res.json(response.data.authorization_url)
    });
   }
   catch (error) {
     if (error) {
+      console.log("ERROR", error)
         return res.status(400)
             .json({
                 status: false,
@@ -52,7 +72,7 @@ exports.fundAccount = async (req, res, next) => {
 
 exports.Verify = async (req,res ) => {
   const ref = req.body.reference;
-  verifyPayment(ref, (error,body)=>{
+  await verifyPayment(ref, (error,body)=>  {
       if(error){
           //handle errors appropriately
           console.log(error)
@@ -62,20 +82,38 @@ exports.Verify = async (req,res ) => {
       console.log("RESPONSE",ref)
       const data = _.at(response.data, ['reference', 'amount','customer.email', 'metadata.full_name']);
       [reference, amount, email, full_name] = data;
-      newDonor = {reference, amount, email, full_name}
-      const donor = new Wallet(newDonor)
-      donor.save().then((donor)=>{
-          if(donor){
-              return res.json({donor:donor._id});
-          }
-      }).catch((e)=>{
-          res.json('An ERror occured');
-      })
+
+
+      const findTransactionRef =   Transaction.findOne ({ reference: req.body.reference})
+      if(findTransactionRef) {
+        const findWallet = Wallet.findOne({userId: findTransactionRef.userId})
+        if(findWallet) {
+            return new Q.Promise(async(resolve, reject) => {
+               const updateBalance =  await Wallet.findOneAndUpdate({ userId:findWallet._id },
+                 { $inc: { balance: amount, } });
+                 console.log("gooo",updateBalance.balance_before)
+              updateBalance.balance_before = updateBalance.balance
+                //  console.log("gooo", updateBalance)
+                if (error) {
+                    console.log("Wallet err:", error);
+                    reject(error);
+                } else {
+                    resolve(updateBalance);
+                    return res.json(updateBalance)
+                  }
+              });
+           
+           
+         //Wallet.findOneAndUpdate({ userId:findWallet._id }, { $inc: { balance: amount } });
+
+        }
+    }
   })
 }
 
 
 
+ 
 
 
 
