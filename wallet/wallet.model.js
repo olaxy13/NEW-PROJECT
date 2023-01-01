@@ -7,22 +7,10 @@ const walletSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       },
-      full_name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
     balance: {
         type: Number,
         default: 0
     },
-    // reference: {
-    //     type: String,
-    //     required: true
-    // },
     balance_before : {
         type: Number,
         default: 0

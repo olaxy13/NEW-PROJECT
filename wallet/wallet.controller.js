@@ -27,7 +27,7 @@ exports.fundAccount = async (req, res, next) => {
    // const form = new Wallet (req.body); 
    const checkuser = await User.findById(req.body.userId)
    
-   console.log("GGGGGG", checkuser)
+   console.log("USERID", checkuser)
   
    if(!checkuser) {
     return res.status(404).json({message: 'User does not exist'})
@@ -37,7 +37,7 @@ exports.fundAccount = async (req, res, next) => {
        full_name : form.full_name
    }
    form.amount *= 100;
-     initializePayment (form, (error, body)=> {
+     initializePayment (form, async (error, body)=> {
        if(error){
            //handle errors
            console.log(error);
@@ -45,15 +45,13 @@ exports.fundAccount = async (req, res, next) => {
       }
        response = JSON.parse(body);
       console.log("first trial", response)
-      const createNewUserTransactionRef =  new Transaction({
+      const createTransactionRef =  new Transaction({
         userId: req.body.userId,
         reference: response.data.reference
       })
- 
-
-      console.log("transaction Ref", createNewUserTransactionRef)
-
-      res.json(response.data.authorization_url)
+      console.log("transaction Ref", createTransactionRef)
+      const saveTransactionRef = await createTransactionRef.save();
+       res.json(response.data.authorization_url)
    });
   }
   catch (error) {
@@ -90,10 +88,10 @@ exports.Verify = async (req,res ) => {
         if(findWallet) {
             return new Q.Promise(async(resolve, reject) => {
                const updateBalance =  await Wallet.findOneAndUpdate({ userId:findWallet._id },
-                 { $inc: { balance: amount, } });
-                 console.log("gooo",updateBalance.balance_before)
+                  { $inc: { balance: amount, }, }, { upsert: true, new: true, setDefaultsOnInsert: true});
+            
               updateBalance.balance_before = updateBalance.balance
-                //  console.log("gooo", updateBalance)
+               console.log("gooo", updateBalance.balance_before)
                 if (error) {
                     console.log("Wallet err:", error);
                     reject(error);
