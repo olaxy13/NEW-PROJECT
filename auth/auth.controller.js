@@ -16,8 +16,10 @@ const { createToken } = require("../config/jwt")
 exports.CreateAccount = async (req, res, next) => {
     try {
         const { email } = req.body;
+        
         const checkUserEmail = await User.findOne({ email })
         if (checkUserEmail) {
+            
             return res.status(409)
                 .json(vm.ApiResponse(false, 409, 'email already exist'))
         }
@@ -25,8 +27,8 @@ exports.CreateAccount = async (req, res, next) => {
         if (!user) {
             return res.status(400)
                 .json(vm.ApiResponse(false, 400, "Oops! an error occurr"))
-        }
-        await new Wallet({
+        } 
+         await new Wallet({
             userId: user._id,
         }).save();
         return res.status(201)
@@ -48,6 +50,7 @@ exports.CreateAccount = async (req, res, next) => {
 //LOGIN
 exports.login = async (req, res, next) => {
     try {
+        
         const { email, password } = req.body
         const user = await User.findOne({ email }).select('+password');
         if (!user) {
@@ -60,6 +63,7 @@ exports.login = async (req, res, next) => {
             const signtoken = createToken({ fullName, _id })
             const { password, ...other } = user._doc; // we return every details except password
             // user.password = undefined;
+            console.log("here")
             return res.status(200)
                 .json(vm.ApiResponse(true, 200, "login sucessfull", { user: other, token: signtoken }))
         }

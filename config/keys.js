@@ -4,8 +4,6 @@ module.exports = {
 }
 
 
-
-
 // client_id: 845303194099 - ps7j7v78p98oj606r50dl1dt9339r07m.apps.googleusercontent.com
 
 // client_secretOrKey: GOCSPX - nCJurlRHa15IZq6bn1zsnNOzr1IB

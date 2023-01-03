@@ -46,8 +46,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+const db = require("./config/keys").mongoURI;
+
 mongoose
-    .connect(process.env.mongoURI)
+    //.connect(process.env.mongoURI)
+    .connect(db) 
     .then(() => console.log("MongoDB Conected"))
     .catch((error) => console.log(error));
 
